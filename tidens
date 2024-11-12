@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .container {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .container h2 {
+            text-align: center;
+            color: #333;
+        }
+        .input-field, .message-field {
+            margin-bottom: 15px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .messages {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .message-item {
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Anonymous Messages</h2>
+    <div class="input-field">
+        <label for="nameInput">Nama:</label>
+        <input type="text" id="nameInput" placeholder="Masukkan Nama">
+    </div>
+    <div class="message-field">
+        <label for="messageInput">Pesan:</label>
+        <textarea id="messageInput" rows="3" placeholder="Tulis pesan Anda"></textarea>
+    </div>
+    <button onclick="addMessage()">Kirim Pesan Anonim</button>
+    
+    <div class="input-field">
+        <label for="searchInput">Cari Pesan Berdasarkan Nama:</label>
+        <input type="text" id="searchInput" placeholder="Cari nama..." oninput="searchMessages()">
+    </div>
+    
+    <div class="messages" id="messages"></div>
+</div>
+
+<script>
+    let messages = [];
+
+    function addMessage() {
+        const name = document.getElementById("nameInput").value.trim();
+        const message = document.getElementById("messageInput").value.trim();
+        
+        if (name && message) {
+            messages.push({ name, message });
+            document.getElementById("nameInput").value = "";
+            document.getElementById("messageInput").value = "";
+            displayMessages();
+        } else {
+            alert("Nama dan pesan harus diisi!");
+        }
+    }
+
+    function displayMessages(filteredMessages = messages) {
+        const messagesDiv = document.getElementById("messages");
+        messagesDiv.innerHTML = "";
+
+        filteredMessages.forEach((msg) => {
+            const messageItem = document.createElement("div");
+            messageItem.classList.add("message-item");
+            messageItem.textContent = `Anonim: ${msg.message}`;
+            messagesDiv.appendChild(messageItem);
+        });
+    }
+
+    function searchMessages() {
+        const searchValue = document.getElementById("searchInput").value.trim().toLowerCase();
+        const filteredMessages = messages.filter((msg) => msg.name.toLowerCase().includes(searchValue));
+        displayMessages(filteredMessages);
+    }
+</script>
+
+</body>
+</html>
